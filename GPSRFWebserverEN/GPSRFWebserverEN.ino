@@ -290,12 +290,10 @@ void parse_gpsmessage()
       //Convert Data
       glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
       glngtemp = (String(glng).substring(0, 3).toFloat() + (String(glng).substring(3).toFloat() / 60));
-      if (gns == 'N') glattemp = -1 * glattemp;
-      if (gew == 'E') glngtemp = -1 * glngtemp;
+      if (gns == 'S') glattemp = -1 * glattemp;
+      if (gew == 'W') glngtemp = -1 * glngtemp;
       gspeedtemp = String(gspeed).toFloat() * 0.514444;
       gspeedweb = gspeedtemp;
-      Serial.println (glattemp);
-      Serial.println (glngtemp);
       break;
     case 2:
       //Get Data from GPGGA message
@@ -311,10 +309,8 @@ void parse_gpsmessage()
       //Convert Data
       glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
       glngtemp = (String(glng).substring(0, 3).toFloat() + (String(glng).substring(3).toFloat() / 60));
-      if (gns == 'N') glattemp = -1 * glattemp;
-      if (gew == 'E') glngtemp = -1 * glngtemp;
-      Serial.println (glattemp);
-      Serial.println (glngtemp);
+      if (gns == 'S') glattemp = -1 * glattemp;
+      if (gew == 'W') glngtemp = -1 * glngtemp;
       break;
     default:
       Serial.println("GPS PARSE ERROR");
