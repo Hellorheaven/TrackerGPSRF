@@ -1,12 +1,23 @@
 # TrackerGPSRF #
 
-## Description:
+## Overview:
+TrackerGPSRF is tracker GPS transmitter through RF 433 Mhz up to 1.8Km.
+
+## Component to buy and assemble:
+### Module GPS/RF:
+- GPS board: 1 x NEO6MV2
+- RF board: 1 x HC12
+### Module hotspot/webserver:
+- Arduino board: 1 x nodemcu v2 (or sparkfun or wemos...)
+- RF board: 1 x HC12
+
+## How it Work
+![alt text](https://github.com/Hellorheaven/TrackerGPSRF/blob/master/schema.png)
 
 ## How to wire GPS/RF module:
 ![alt text](https://github.com/Hellorheaven/TrackerGPSRF/blob/master/GPSRF_module.png)
 
 ## How to wire Hotspot/Webserver module:
-
 ![alt text](https://github.com/Hellorheaven/TrackerGPSRF/blob/master/Webserver_module.png)
 
 ## How to power each module:
