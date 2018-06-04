@@ -51,7 +51,7 @@ Or you can use the PreBuild Firmware push directly in the git (PreBuild_Firmware
 https://nodemcu.readthedocs.io/en/latest/en/flash/#nodemcu-flasher
 
 ## How to access to hotspot and webserver: 
-you add to search the wifi connection behind ans use the password (it can change in source)
+you add to search the wifi connection behind ans use the password (it can be change in source)
 ###### WiFi HotSpot SSID: _GPSRFWebserver_
 ###### WiFi HotSpot PASSWORD: _RFGPS123456789_
 
