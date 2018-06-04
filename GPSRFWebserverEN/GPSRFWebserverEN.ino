@@ -226,8 +226,8 @@ void handleRoot() {
 
              "<html>\
     <head>\
-      <meta http-equiv='refresh' content='30'/>\
-      <title>Retrive me</title>\
+      <meta http-equiv='refresh' content='10'/>\
+      <title>Retrieve me</title>\
       <style>\
         body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; font-size: 1.5em; Color: #000000; }\
         h1 { Color: #AA0000; }\
@@ -239,8 +239,8 @@ void handleRoot() {
       <p>Location: %f,%f</p>\
       <p>Altitude: %s meter</p>\
       <p>Speed: %f m/s</p>\
-      <p>Go to Google Maps: <a href='https://www.google.com/maps/place/%f,%f'>disconnect from the WiFi Hotspot GPSRFWebserver and click here</a></p>\
-      <p>This page refreshes every 30 seconds. Click <a href=\"javascript:window.location.reload();\">here</a> to refresh the page now.</p>\
+      <p>Go to Google Maps: disconnect from the WiFi Hotspot GPSRFWebserver and <a href='https://www.google.com/maps/place/%f,%f'>click here</a></p>\
+      <p>This page refreshes every 30 seconds. <a href=\"javascript:window.location.reload();\">Click here</a> to refresh the page now.</p>\
     </body>\
   </html>",
 

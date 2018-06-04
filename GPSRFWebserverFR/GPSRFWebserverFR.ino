@@ -226,21 +226,21 @@ void handleRoot() {
 
              "<html>\
     <head>\
-      <meta http-equiv='refresh' content='30'/>\
-      <title>Retrive me</title>\
+      <meta http-equiv='refresh' content='10'/>\
+      <title>Retrouve moi</title>\
       <style>\
         body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; font-size: 1.5em; Color: #000000; }\
         h1 { Color: #AA0000; }\
       </style>\
     </head>\
     <body>\
-      <h1>Retrieve ME</h1>\
-      <p>Uptime: %02d:%02d:%02d</p>\
-      <p>Location: %f,%f</p>\
+      <h1>Retrouve moi</h1>\
+      <p>Serveur web démarré depuis: %02d:%02d:%02d</p>\
+      <p>Coordonnées GPS du tracker: %f,%f</p>\
       <p>Altitude: %s meter</p>\
-      <p>Speed: %f m/s</p>\
-      <p>Go to Google Maps: <a href='https://www.google.com/maps/place/%f,%f'>disconnect from the WiFi Hotspot GPSRFWebserver and click here</a></p>\
-      <p>This page refreshes every 30 seconds. Click <a href=\"javascript:window.location.reload();\">here</a> to refresh the page now.</p>\
+      <p>Vitesse: %f m/s</p>\
+      <p>Voir dans Google Maps: Se déconnecter du point d'acces WiFi GPSRFWebserver et <a href='https://www.google.com/maps/place/%f,%f'>cliquez ici</a></p>\
+      <p>Cette page se rafraichit toutes les 10 secondes. <a href=\"javascript:window.location.reload();\">Cliquez ici</a> pour rafraichir maintenant.</p>\
     </body>\
   </html>",
 
