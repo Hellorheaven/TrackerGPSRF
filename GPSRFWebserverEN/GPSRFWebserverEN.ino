@@ -1,9 +1,12 @@
+
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include <ESP8266HTTPUpdateServer.h>
 #include <SoftwareSerial.h>
+
+
 
 //--- Begin Pin Declarations ---//
 const byte HC12RxdPin = 14;                          // "RXD" Pin on HC12
@@ -14,7 +17,6 @@ const byte HC12SetPin = 13;                          // "SET" Pin on HC12
 char byteIn;                                        // Temporary variable
 String HC12ReadBuffer = "";                         // Read/Write Buffer 1 -- Serial
 String SerialReadBuffer = "";                       // Read/Write Buffer 2 -- HC12
-
 
 char *galt = NULL ;
 float glatweb;
@@ -226,7 +228,7 @@ void handleRoot() {
 
              "<html>\
     <head>\
-      <meta http-equiv='refresh' content='10'/>\
+      <meta http-equiv='refresh' content='30'/>\
       <title>Retrieve me</title>\
       <style>\
         body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; font-size: 1.5em; Color: #000000; }\

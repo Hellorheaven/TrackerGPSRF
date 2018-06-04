@@ -15,7 +15,6 @@ char byteIn;                                        // Temporary variable
 String HC12ReadBuffer = "";                         // Read/Write Buffer 1 -- Serial
 String SerialReadBuffer = "";                       // Read/Write Buffer 2 -- HC12
 
-
 char *galt = NULL ;
 float glatweb;
 float glngweb;
@@ -41,7 +40,6 @@ const char* password = "RFGPS123456789";
 // Create Software Serial Ports for HC12 & GPS
 // Software Serial ports Rx and Tx are opposite the HC12 Rxd and Txd
 SoftwareSerial HC12(HC12TxdPin, HC12RxdPin);
-
 
 // Define Access point IP
 IPAddress local_IP(192, 168, 4, 1);
@@ -95,7 +93,6 @@ void setup() {
   server.begin();
   Serial.printf("HTTP Web Server ready! Open http://%s.local/ in your browser\n", host);
   delay(3000);
-
 
   pinMode(HC12SetPin, OUTPUT);                      // Output High for Transparent / Low for Command
   digitalWrite(HC12SetPin, HIGH);                   // Enter Transparent mode
@@ -226,7 +223,7 @@ void handleRoot() {
 
              "<html>\
     <head>\
-      <meta http-equiv='refresh' content='10'/>\
+      <meta http-equiv='refresh' content='30'/>\
       <title>Retrouve moi</title>\
       <style>\
         body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; font-size: 1.5em; Color: #000000; }\
@@ -240,7 +237,7 @@ void handleRoot() {
       <p>Altitude: %s meter</p>\
       <p>Vitesse: %f m/s</p>\
       <p>Voir dans Google Maps: Se déconnecter du point d'acces WiFi GPSRFWebserver et <a href='https://www.google.com/maps/place/%f,%f'>cliquez ici</a></p>\
-      <p>Cette page se rafraichit toutes les 10 secondes. <a href=\"javascript:window.location.reload();\">Cliquez ici</a> pour rafraichir maintenant.</p>\
+      <p>Cette page se rafraichit toutes les 30 secondes. <a href=\"javascript:window.location.reload();\">Cliquez ici</a> pour rafraichir maintenant.</p>\
     </body>\
   </html>",
 
