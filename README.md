@@ -38,6 +38,12 @@ Just put a lipo 1S 3.7v (or other battery that give 3.7V)
 You can also power the Hotspot/Webserver(nodemcu) with USB.
 
 ## How to flash firmware on the Hotspot/Webserver module
+You have choice to edit source and build your own firmware using Arduino IDE 
+https://www.arduino.cc/en/Main/software 
+and configure the ESP8266 library 
+https://learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/installing-the-esp8266-arduino-addon
+
+Or you can use the PreBuild Firmware push directly in the git (PreBuild_Firmware directory) with the flasher below:
 https://nodemcu.readthedocs.io/en/latest/en/flash/#nodemcu-flasher
 
 ## How to access to hotspot and webserver: 
