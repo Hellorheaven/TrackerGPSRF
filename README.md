@@ -22,7 +22,11 @@ It composed by two module:
 To be update.
 
 ## How to parameter HC12 to increase from 1Km to 1.8Km:
-To be update.
+Before wired the two HC12 Board you can configure them to increase their range to 1.8km. 
+For that you have to use an USB TTL and send AT command(like describe in datasheet) to pass the board to 2400 or 1200 baud and FU4 mode.
+in this configuration the HC12 can transmit only 60 bits by message... (this fonctionnality had not been tested for the moment).
+
+_Default parameter is 9600 baud and FU3 mode_.
 
 ## How to wire GPS/RF module:
 ![alt text](https://github.com/Hellorheaven/TrackerGPSRF/blob/master/GPSRF_module.png)
