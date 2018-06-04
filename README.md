@@ -7,7 +7,7 @@ TrackerGPSRF is tracker GPS transmitter through RF 433 Mhz up to 1.8Km.
 ### Module GPS/RF:
 - GPS board: 1 x NEO6MV2
 - RF board: 1 x HC12
-### Module hotspot/webserver:
+### Module Hotspot/Webserver:
 - Arduino board: 1 x nodemcu v2 (or sparkfun or wemos...)
 - RF board: 1 x HC12
 
