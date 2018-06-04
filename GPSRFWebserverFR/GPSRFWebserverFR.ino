@@ -5,40 +5,37 @@
 #include <ESP8266HTTPUpdateServer.h>
 #include <SoftwareSerial.h>
 
-
 //--- Begin Pin Declarations ---//
 const byte HC12RxdPin = 14;                          // "RXD" Pin on HC12
 const byte HC12TxdPin = 12;                          // "TXD" Pin on HC12
 const byte HC12SetPin = 13;                          // "SET" Pin on HC12
-
 //--- End Pin Declarations ---//
-
 
 char byteIn;                                        // Temporary variable
 String HC12ReadBuffer = "";                         // Read/Write Buffer 1 -- Serial
 String SerialReadBuffer = "";                       // Read/Write Buffer 2 -- HC12
 
-char glat [9] ;
-char glng [11] ;
-char gspeed [5] ;
-char galt [6] ;
-float glattemp1;
-float glngtemp1;
-float gspeedtemp1;
+
+char *galt = NULL ;
+float glatweb;
+float glngweb;
+float gspeedweb;
 char* GPSSentence;
 
-
-float VCC;
-float VccGPS;
-
-char* VccText;
-
-char msgBuffer[6];
-
+//float VCC;
+//float VccGPS;
+//char* VccText;
+//char msgBuffer[6];
 
 boolean serialEnd = false;                          // Flag for End of Serial String
 boolean HC12End = false;                            // Flag for End of HC12 String
 boolean commandMode = false;                        // Send AT commands to remote receivers
+
+const char* host = "GPSRFWebserver";
+const char* hostUpdate = "GPSRFWUpdate";
+const char* ssid = "GPSRFWebserver";
+const char* password = "RFGPS123456789";
+
 //--- End variable declarations ---//
 
 // Create Software Serial Ports for HC12 & GPS
@@ -46,11 +43,7 @@ boolean commandMode = false;                        // Send AT commands to remot
 SoftwareSerial HC12(HC12TxdPin, HC12RxdPin);
 
 
-
-const char* host = "GPSRFWebserver";
-const char* hostUpdate = "GPSRFWUpdate";
-const char* ssid = "GPSRFWebserver";
-const char* password = "RFGPS123456789";
+// Define Access point IP
 IPAddress local_IP(192, 168, 4, 1);
 IPAddress gateway(192, 168, 4, 1);
 IPAddress subnet(255, 255, 255, 0);
@@ -59,7 +52,7 @@ IPAddress subnet(255, 255, 255, 0);
 ESP8266WebServer server(80);
 ESP8266WebServer httpServer(81);
 ESP8266HTTPUpdateServer httpUpdater;
-ADC_MODE(ADC_VCC);
+//ADC_MODE(ADC_VCC);
 
 
 void setup() {
@@ -79,6 +72,7 @@ void setup() {
   WiFi.softAP(ssid, password);
 
   IPAddress myIP = WiFi.softAPIP();
+
   Serial.print("AP IP address: ");
   Serial.println(myIP);
 
@@ -114,6 +108,7 @@ void setup() {
 
 
 }
+
 
 void loop() {
   while (HC12.available()) {                        // If Arduino's HC12 rx buffer has data
@@ -171,12 +166,12 @@ void loop() {
 
       Serial.println(HC12ReadBuffer);                 // Send message to screen
       GPSSentence = strdup(HC12ReadBuffer.c_str());
-      gps_parse();
+      parse_gpsmessage();
     }
     if (HC12ReadBuffer.startsWith("$GPGGA")) {
       Serial.println(HC12ReadBuffer);                 // Send message to screen
       GPSSentence = strdup(HC12ReadBuffer.c_str());
-      gps_parse();
+      parse_gpsmessage();
     }
     HC12ReadBuffer = "";                            // Empty Buffer
     HC12End = false;                                // Reset Flag
@@ -186,7 +181,6 @@ void loop() {
   httpServer.handleClient();
 
 }
-
 
 
 void handleNotFound() {
@@ -207,6 +201,7 @@ void handleNotFound() {
   server.send ( 404, "text/plain", message );
 
 }
+
 
 void handleRoot() {
 
@@ -250,8 +245,8 @@ void handleRoot() {
   </html>",
 
              hr, min % 60, sec % 60,
-             glattemp1, glngtemp1, galt, gspeedtemp1,
-             glattemp1, glngtemp1
+             glatweb, glngweb, galt, gspeedweb,
+             glatweb, glngweb
 
            );
   server.send ( 200, "text/html", html );
@@ -259,19 +254,19 @@ void handleRoot() {
 }
 
 
-
-
-
-void gps_parse()
+void parse_gpsmessage()
 {
   float glattemp;
   float glngtemp;
   float gspeedtemp;
+  char *gspeed = NULL ;
+  char *glat = NULL ;
+  char *glng = NULL ;
+  char gns = 0 ;
+  char gew = 0 ;
   char* token;
   char delim[] = ",";
   int gps_message_type;
-
-
 
   token = strtok(GPSSentence, delim);
   if (strcmp(token, "$GPRMC") == 0) {
@@ -284,40 +279,44 @@ void gps_parse()
   switch (gps_message_type)
   {
     case 1:
-
+      //Get Data from GPRMS message
       strtok(NULL, delim);
       strtok(NULL, delim);
-      strcpy(glat, strtok(NULL, delim));
+      glat = strtok(NULL, delim);
+      gns = *strtok(NULL, delim);
+      glng = strtok(NULL, delim);
+      gew = *strtok(NULL, delim);
+      gspeed = strtok(NULL, delim);
+      //Convert Data
       glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
-      strtok(NULL, delim);
-      strcpy(glng, strtok(NULL, delim));
       glngtemp = (String(glng).substring(0, 3).toFloat() + (String(glng).substring(3).toFloat() / 60));
-      strtok(NULL, delim);
-      strcpy(gspeed, strtok(NULL, delim));
+      if (gns == 'S') glattemp = -1 * glattemp;
+      if (gew == 'W') glngtemp = -1 * glngtemp;
       gspeedtemp = String(gspeed).toFloat() * 0.514444;
-      gspeedtemp1 = gspeedtemp;
+      gspeedweb = gspeedtemp;
       break;
     case 2:
-
+      //Get Data from GPGGA message
       strtok(NULL, delim);
-      strcpy(glat, strtok(NULL, delim));
+      glat = strtok(NULL, delim);
+      gns = *strtok(NULL, delim);
+      glng = strtok(NULL, delim);
+      gew = *strtok(NULL, delim);
+      strtok(NULL, delim);
+      strtok(NULL, delim);
+      strtok(NULL, delim);
+      galt = strtok(NULL, delim);
+      //Convert Data
       glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
-      strtok(NULL, delim);
-      strcpy(glng, strtok(NULL, delim));
       glngtemp = (String(glng).substring(0, 3).toFloat() + (String(glng).substring(3).toFloat() / 60));
-      strtok(NULL, delim);
-      strtok(NULL, delim);
-      strtok(NULL, delim);
-      strtok(NULL, delim);
-      strcpy(galt, strtok(NULL, delim));
-
+      if (gns == 'S') glattemp = -1 * glattemp;
+      if (gew == 'W') glngtemp = -1 * glngtemp;
       break;
     default:
       Serial.println("GPS PARSE ERROR");
       break;
   }
-  glngtemp1 = glngtemp;
-  glattemp1 = glattemp;
-
+  glngweb = glngtemp;
+  glatweb = glattemp;
   strcpy(GPSSentence, "");
 }
