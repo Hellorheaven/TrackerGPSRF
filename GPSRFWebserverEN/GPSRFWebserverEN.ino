@@ -10,7 +10,6 @@
 const byte HC12RxdPin = 14;                          // "RXD" Pin on HC12
 const byte HC12TxdPin = 12;                          // "TXD" Pin on HC12
 const byte HC12SetPin = 13;                          // "SET" Pin on HC12
-
 //--- End Pin Declarations ---//
 
 
@@ -18,8 +17,7 @@ char byteIn;                                        // Temporary variable
 String HC12ReadBuffer = "";                         // Read/Write Buffer 1 -- Serial
 String SerialReadBuffer = "";                       // Read/Write Buffer 2 -- HC12
 
-char glat [9] ;
-char glng [11] ;
+
 char gspeed [5] ;
 char galt [6] ;
 float glattemp1;
@@ -267,6 +265,8 @@ void gps_parse()
   float glattemp;
   float glngtemp;
   float gspeedtemp;
+  char glat [9] ;
+  char glng [11] ;
   char gns[1] ;
   char gew[1] ;
   char* token;
@@ -292,12 +292,12 @@ void gps_parse()
       strcpy(glat, strtok(NULL, delim));
       glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
       gns = strtok(NULL, delim);
-      if (gns == "S") glattemp = -1 * glattemp
-                                   strcpy(glng, strtok(NULL, delim));
+      if (gns == "S") glattemp = -1 * glattemp;
+      strcpy(glng, strtok(NULL, delim));
       glngtemp = (String(glng).substring(0, 3).toFloat() + (String(glng).substring(3).toFloat() / 60));
       gew = strtok(NULL, delim);
-      if (gew == "S") glngtemp = -1 * glngtemp
-                                   strcpy(gspeed, strtok(NULL, delim));
+      if (gew == "S") glngtemp = -1 * glngtemp;
+      strcpy(gspeed, strtok(NULL, delim));
       gspeedtemp = String(gspeed).toFloat() * 0.514444;
       gspeedtemp1 = gspeedtemp;
       break;
@@ -307,12 +307,12 @@ void gps_parse()
       strcpy(glat, strtok(NULL, delim));
       glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
       gns = strtok(NULL, delim);
-      if (gns == "S") glattemp = -1 * glattemp
-                                   strcpy(glng, strtok(NULL, delim));
+      if (gns == "S") glattemp = -1 * glattemp;
+      strcpy(glng, strtok(NULL, delim));
       glngtemp = (String(glng).substring(0, 3).toFloat() + (String(glng).substring(3).toFloat() / 60));
       gew = strtok(NULL, delim);
-      if (gew == "W") glngtemp = -1 * glngtemp
-                                   strtok(NULL, delim);
+      if (gew == "W") glngtemp = -1 * glngtemp;
+      strtok(NULL, delim);
       strtok(NULL, delim);
       strtok(NULL, delim);
       strcpy(galt, strtok(NULL, delim));
