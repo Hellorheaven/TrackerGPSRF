@@ -267,6 +267,8 @@ void gps_parse()
   float glattemp;
   float glngtemp;
   float gspeedtemp;
+  char gns[1] ;
+  char gew[1] ;
   char* token;
   char delim[] = ",";
   int gps_message_type;
@@ -289,11 +291,13 @@ void gps_parse()
       strtok(NULL, delim);
       strcpy(glat, strtok(NULL, delim));
       glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
-      strtok(NULL, delim);
-      strcpy(glng, strtok(NULL, delim));
+      gns = strtok(NULL, delim);
+      if (gns == "S") glattemp = -1 * glattemp
+                                   strcpy(glng, strtok(NULL, delim));
       glngtemp = (String(glng).substring(0, 3).toFloat() + (String(glng).substring(3).toFloat() / 60));
-      strtok(NULL, delim);
-      strcpy(gspeed, strtok(NULL, delim));
+      gew = strtok(NULL, delim);
+      if (gew == "S") glngtemp = -1 * glngtemp
+                                   strcpy(gspeed, strtok(NULL, delim));
       gspeedtemp = String(gspeed).toFloat() * 0.514444;
       gspeedtemp1 = gspeedtemp;
       break;
@@ -302,11 +306,13 @@ void gps_parse()
       strtok(NULL, delim);
       strcpy(glat, strtok(NULL, delim));
       glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
-      strtok(NULL, delim);
-      strcpy(glng, strtok(NULL, delim));
+      gns = strtok(NULL, delim);
+      if (gns == "S") glattemp = -1 * glattemp
+                                   strcpy(glng, strtok(NULL, delim));
       glngtemp = (String(glng).substring(0, 3).toFloat() + (String(glng).substring(3).toFloat() / 60));
-      strtok(NULL, delim);
-      strtok(NULL, delim);
+      gew = strtok(NULL, delim);
+      if (gew == "W") glngtemp = -1 * glngtemp
+                                   strtok(NULL, delim);
       strtok(NULL, delim);
       strtok(NULL, delim);
       strcpy(galt, strtok(NULL, delim));
