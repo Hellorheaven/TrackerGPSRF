@@ -1,13 +1,10 @@
 #include <FS.h>
 #include <ESP8266WiFi.h>
-#include <WiFiClient.h>
+//#include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <ESP8266mDNS.h>
+//#include <ESP8266mDNS.h>
 //#include <ESP8266HTTPUpdateServer.h>
 #include <SoftwareSerial.h>
-
-
-
 
 
 //--- Begin Pin Declarations ---//
@@ -69,7 +66,7 @@ void setup() {
   Serial.println("Configuring access point...");
 
   //set-up the custom IP address
-  WiFi.mode(WIFI_AP_STA);
+  //WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(local_IP, gateway, subnet);  // subnet FF FF FF 00
 
   /* You can remove the password parameter if you want the AP to be open. */
@@ -81,14 +78,14 @@ void setup() {
   Serial.print("AP IP address: ");
   Serial.println(myIP);
 
-  MDNS.begin(host);
+//  MDNS.begin(host);
 //  MDNS.begin(hostUpdate);
 
 //  httpUpdater.setup(&httpServer);
 //  httpServer.begin();
 
 //  MDNS.addService("http", "tcp", 81);
-  MDNS.addService("http", "tcp", 80);
+ // MDNS.addService("http", "tcp", 80);
 //  Serial.printf("HTTP Update Server is ready! Open http://%s.local:81/update in your browser\n", hostUpdate);
 
   if (!SPIFFS.begin())
@@ -123,10 +120,7 @@ void setup() {
 
 void loop() {
 
-
-  server.handleClient();
-//  httpServer.handleClient();
-  while (HC12.available()) {                        // If Arduino's HC12 rx buffer has data
+ while (HC12.available()) {                        // If Arduino's HC12 rx buffer has data
     byteIn = HC12.read();                           // Store each character in byteIn
 
     HC12ReadBuffer += char(byteIn);                 // Write each character of byteIn to HC12ReadBuffer
@@ -192,7 +186,9 @@ void loop() {
     HC12End = false;                                // Reset Flag
   }
 
-
+  server.handleClient();
+//  httpServer.handleClient();
+delay(5000);
 
 }
 
@@ -318,7 +314,7 @@ void parse_gpsmessage()
       break;
 
   }
-delay(5000);
+
   strcpy(GPSSentence, "");
 
 
