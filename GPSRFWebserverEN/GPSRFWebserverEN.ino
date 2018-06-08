@@ -57,6 +57,7 @@ ESP8266WebServer server(80);
 
 
 void setup() {
+  WiFi.disconnect();
   Serial.begin(9600);                               // Open serial port to computer at 9600 Baud
   HC12ReadBuffer.reserve(82);                       // Reserve 82 bytes for message
   SerialReadBuffer.reserve(82);                     // Reserve 82 bytes for message
@@ -97,7 +98,7 @@ void setup() {
   }
   server.on("/gps.json", sendGPS);
   server.serveStatic("/index.html", SPIFFS, "/index.html");
-  server.serveStatic("/", SPIFFS, "/index.html");
+//  server.serveStatic("/", SPIFFS, "/index.html");
 
 
   server.begin();
@@ -188,7 +189,7 @@ void loop() {
 
   server.handleClient();
 //  httpServer.handleClient();
-delay(5000);
+//delay(5000);
 
 }
 
