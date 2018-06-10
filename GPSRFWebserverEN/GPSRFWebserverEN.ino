@@ -28,6 +28,7 @@ char* GPSSentence;
 //char* VccText;
 //char msgBuffer[6];
 
+bool autoConnect;
 boolean serialEnd = false;                          // Flag for End of Serial String
 boolean HC12End = false;                            // Flag for End of HC12 String
 boolean commandMode = false;                        // Send AT commands to remote receivers
@@ -58,9 +59,10 @@ ESP8266WebServer server(80);
 
 void setup() {
 
+  WiFi.disconnect() ;
   Serial.begin(9600);  // Open serial port to computer at 9600 Baud
   Serial.setDebugOutput(true);
-  WiFi.setAutoConnect(false);
+
   HC12ReadBuffer.reserve(82);                       // Reserve 82 bytes for message
   SerialReadBuffer.reserve(82);                     // Reserve 82 bytes for message
   //  GPSReadBuffer.reserve(82);                        // Reserve 82 bytes for longest NMEA sentence
@@ -69,8 +71,8 @@ void setup() {
   Serial.println("Configuring access point...");
 
   //set-up the custom IP address
-  ESP.eraseConfig() ;
-  WiFi.disconnect() ;
+
+
   WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(local_IP, gateway, subnet);  // subnet FF FF FF 00
 
@@ -78,7 +80,7 @@ void setup() {
   WiFi.softAP(ssid, password);
 
   IPAddress myIP = WiFi.softAPIP();
-
+  Serial.println(WiFi.getAutoConnect());
 
   Serial.print("AP IP address: ");
   Serial.println(myIP);
