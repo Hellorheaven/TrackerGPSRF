@@ -32,10 +32,10 @@ boolean serialEnd = false;                          // Flag for End of Serial St
 boolean HC12End = false;                            // Flag for End of HC12 String
 boolean commandMode = false;                        // Send AT commands to remote receivers
 
-const char* host = "GPSRFWebserver";
+const char* host = "TrackerGPSRF";
 //const char* hostUpdate = "GPSRFWUpdate";
 const char* ssid = "TrackerGPSRF";
-const char* password = "RFGPS123456789";
+const char* password = "123456789";
 
 //--- End variable declarations ---//
 
@@ -57,8 +57,10 @@ ESP8266WebServer server(80);
 
 
 void setup() {
-  WiFi.disconnect();
-  Serial.begin(9600);                               // Open serial port to computer at 9600 Baud
+
+  Serial.begin(9600);  // Open serial port to computer at 9600 Baud
+  Serial.setDebugOutput(true);
+  WiFi.setAutoConnect(false);
   HC12ReadBuffer.reserve(82);                       // Reserve 82 bytes for message
   SerialReadBuffer.reserve(82);                     // Reserve 82 bytes for message
   //  GPSReadBuffer.reserve(82);                        // Reserve 82 bytes for longest NMEA sentence
@@ -67,7 +69,9 @@ void setup() {
   Serial.println("Configuring access point...");
 
   //set-up the custom IP address
-  //WiFi.mode(WIFI_AP);
+  ESP.eraseConfig() ;
+  WiFi.disconnect() ;
+  WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(local_IP, gateway, subnet);  // subnet FF FF FF 00
 
   /* You can remove the password parameter if you want the AP to be open. */
@@ -79,15 +83,15 @@ void setup() {
   Serial.print("AP IP address: ");
   Serial.println(myIP);
 
-//  MDNS.begin(host);
-//  MDNS.begin(hostUpdate);
+  //  MDNS.begin(host);
+  //  MDNS.begin(hostUpdate);
 
-//  httpUpdater.setup(&httpServer);
-//  httpServer.begin();
+  //  httpUpdater.setup(&httpServer);
+  //  httpServer.begin();
 
-//  MDNS.addService("http", "tcp", 81);
- // MDNS.addService("http", "tcp", 80);
-//  Serial.printf("HTTP Update Server is ready! Open http://%s.local:81/update in your browser\n", hostUpdate);
+  //  MDNS.addService("http", "tcp", 81);
+  // MDNS.addService("http", "tcp", 80);
+  //  Serial.printf("HTTP Update Server is ready! Open http://%s.local:81/update in your browser\n", hostUpdate);
 
   if (!SPIFFS.begin())
   {
@@ -98,7 +102,9 @@ void setup() {
   }
   server.on("/gps.json", sendGPS);
   server.serveStatic("/index.html", SPIFFS, "/index.html");
-//  server.serveStatic("/", SPIFFS, "/index.html");
+  //  server.serveStatic("/", SPIFFS, "/index.html");
+  server.onNotFound(handleNotFound);          // if someone requests any other file or page, go to function 'handleNotFound'
+  // and check if the file exists
 
 
   server.begin();
@@ -121,7 +127,7 @@ void setup() {
 
 void loop() {
 
- while (HC12.available()) {                        // If Arduino's HC12 rx buffer has data
+  while (HC12.available()) {                        // If Arduino's HC12 rx buffer has data
     byteIn = HC12.read();                           // Store each character in byteIn
 
     HC12ReadBuffer += char(byteIn);                 // Write each character of byteIn to HC12ReadBuffer
@@ -188,13 +194,14 @@ void loop() {
   }
 
   server.handleClient();
-//  httpServer.handleClient();
-//delay(5000);
+  //  httpServer.handleClient();
+  //delay(5000);
 
 }
 
 
 void handleNotFound() {
+
 
   String message = "File Not Found\n\n";
   message += "URI: ";
@@ -210,9 +217,7 @@ void handleNotFound() {
   }
 
   server.send ( 404, "text/plain", message );
-
 }
-
 
 void sendGPS() {
 
@@ -320,3 +325,4 @@ void parse_gpsmessage()
 
 
 }
+
