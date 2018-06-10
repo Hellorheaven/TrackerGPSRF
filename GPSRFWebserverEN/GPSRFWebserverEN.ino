@@ -34,7 +34,7 @@ boolean commandMode = false;                        // Send AT commands to remot
 
 const char* host = "GPSRFWebserver";
 //const char* hostUpdate = "GPSRFWUpdate";
-const char* ssid = "GPSRFWebserver";
+const char* ssid = "TrackerGPSRF";
 const char* password = "RFGPS123456789";
 
 //--- End variable declarations ---//
