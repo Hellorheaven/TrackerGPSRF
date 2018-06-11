@@ -260,6 +260,7 @@ void parse_gpsmessage()
   char *gspeed = NULL ;
   char *glat = NULL ;
   char *glng = NULL ;
+  char *gvalid1 = NULL;
   char gns = 0 ;
   char gvalid = 0 ;
   char gew = 0 ;
@@ -310,10 +311,10 @@ void parse_gpsmessage()
       gns = *strtok(NULL, delim);
       glng = strtok(NULL, delim);
       gew = *strtok(NULL, delim);
-      gvalid = *strtok(NULL, delim);
-      if (gvalid != '0') {
-        strtok(NULL, delim);
-        strtok(NULL, delim);
+      strtok(NULL, delim);
+      gvalid1 =strtok(NULL, delim);
+      strtok(NULL, delim);
+      if (strcmp(gvalid1, "0") != 0 ) {
         galt = strtok(NULL, delim);
         //Convert Data
         glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
