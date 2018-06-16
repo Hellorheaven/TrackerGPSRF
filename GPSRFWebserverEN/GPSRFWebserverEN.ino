@@ -18,6 +18,8 @@ String HC12ReadBuffer = "";                         // Read/Write Buffer 1 -- Se
 String SerialReadBuffer = "";                       // Read/Write Buffer 2 -- HC12
 
 char *galt = NULL ;
+char *gtime = NULL ;
+char *gdate = NULL ;
 float glatweb;
 float glngweb;
 float gspeedweb;
@@ -240,13 +242,15 @@ void sendGPS() {
   String json = "{\"Hours\":\"" + String(hr) + "\",";
   json += "\"Minutes\":\"" + String(min % 60) + "\",";
   json += "\"Seconds\":\"" + String(sec % 60) + "\",";
+  json += "\"gTime\":\"" + String(gtime) + "\",";
+  json += "\"gDate\":\"" + String(gdate) + "\",";
   json += "\"latitude\":\"" + String(glatweb, 6) + "\",";
   json += "\"longitude\":\"" + String(glngweb, 6) + "\",";
   json += "\"altitude\":\"" + String(galt) + "\",";
   json += "\"speed\":\"" + String(gspeedweb) + "\"}";
 
-  server.send(200, "application/json", json);
-  Serial.println("json envoye");
+  server.send(200, "text/html", json);
+  Serial.println("json send");
 }
 
 
@@ -258,11 +262,13 @@ void parse_gpsmessage()
   char *gspeed = NULL ;
   char *glat = NULL ;
   char *glng = NULL ;
+  char *gvalid1 = NULL;
   char gns = 0 ;
   char gvalid = 0 ;
   char gew = 0 ;
   char* token;
   char delim[] = ",";
+
   int gps_message_type;
 
   token = strtok(GPSSentence, delim);
@@ -278,7 +284,7 @@ void parse_gpsmessage()
   {
     case 1:
       //Get Data from GPRMS message
-      strtok(NULL, delim);
+      gtime = strtok(NULL, delim);
       gvalid = *strtok(NULL, delim);
       if (gvalid == 'A') {
         glat = strtok(NULL, delim);
@@ -286,6 +292,8 @@ void parse_gpsmessage()
         glng = strtok(NULL, delim);
         gew = *strtok(NULL, delim);
         gspeed = strtok(NULL, delim);
+        strtok(NULL, delim);
+        gdate = strtok(NULL, delim);
 
         //Convert Data
         glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
@@ -306,16 +314,18 @@ void parse_gpsmessage()
       glng = strtok(NULL, delim);
       gew = *strtok(NULL, delim);
       strtok(NULL, delim);
+      gvalid1 =strtok(NULL, delim);
       strtok(NULL, delim);
-      strtok(NULL, delim);
-      galt = strtok(NULL, delim);
-      //Convert Data
-      glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
-      glngtemp = (String(glng).substring(0, 3).toFloat() + (String(glng).substring(3).toFloat() / 60));
-      if (gns == 'S') glattemp = -1 * glattemp;
-      if (gew == 'W') glngtemp = -1 * glngtemp;
-      glngweb = glngtemp;
-      glatweb = glattemp;
+      if (strcmp(gvalid1, "0") != 0 ) {
+        galt = strtok(NULL, delim);
+        //Convert Data
+        glattemp = (String(glat).substring(0, 2).toFloat() + (String(glat).substring(2).toFloat() / 60));
+        glngtemp = (String(glng).substring(0, 3).toFloat() + (String(glng).substring(3).toFloat() / 60));
+        if (gns == 'S') glattemp = -1 * glattemp;
+        if (gew == 'W') glngtemp = -1 * glngtemp;
+        glngweb = glngtemp;
+        glatweb = glattemp;
+      }
       break;
     default:
       Serial.println("GPS PARSE ERROR");
