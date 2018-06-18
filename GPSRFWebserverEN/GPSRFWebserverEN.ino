@@ -314,7 +314,7 @@ void parse_gpsmessage()
       glng = strtok(NULL, delim);
       gew = *strtok(NULL, delim);
       strtok(NULL, delim);
-      gvalid1 =strtok(NULL, delim);
+      gvalid1 = strtok(NULL, delim);
       strtok(NULL, delim);
       if (strcmp(gvalid1, "0") != 0 ) {
         galt = strtok(NULL, delim);
