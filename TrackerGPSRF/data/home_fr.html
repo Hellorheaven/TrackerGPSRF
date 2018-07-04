@@ -2,6 +2,7 @@
 	<head>
 		<title>TrackerGPSRF</title>
 		<script>
+			setTimeout('', 10000);
 			setInterval(parse_json, 20000);
 			function parse_json(){
 				var xmlhttp = new XMLHttpRequest();
@@ -16,7 +17,7 @@
 						document.getElementById("longitude").innerHTML = myObj.longitude;
 						document.getElementById("altitude").innerHTML = myObj.altitude;
 						document.getElementById("speed").innerHTML = myObj.speed;
-						document.getElementById("url").innerHTML ='<a href="https://www.google.com/maps/place/' + myObj.latitude + ',' + myObj.longitude + '">click here</a>';
+						document.getElementById("url").innerHTML ='<a href="https://www.google.com/maps/place/' + myObj.latitude + ',' + myObj.longitude + '">cliquez ici</a>';
 					}
 				};
 				xmlhttp.open("GET", "gps.json", true);
@@ -29,7 +30,7 @@
 		</style>
 	</head>
 	<body>
-		<h1>TrackerGPSRF</h1>
+		<center><h1>TrackerGPSRF</h1></center>
 		<p>Serveur web démarré depuis:  <text id=hour></text>:<text id=min></text>:<text id=sec></text></p>
 		<p>Coordonnées GPS du tracker: <text id=latitude></text>,<text id=longitude></text></p>
 		<p>Altitude: <text id=altitude></text> meter</p>
