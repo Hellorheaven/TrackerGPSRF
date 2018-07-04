@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<title>TrackerGPSRF</title>
+		<script>
+			setInterval(parse_json, 20000);
+			function parse_json(){
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var date1=new Date();
+						var myObj = JSON.parse(this.responseText);
+						document.getElementById("hour").innerHTML = myObj.Hours;
+						document.getElementById("min").innerHTML = myObj.Minutes;
+						document.getElementById("sec").innerHTML = myObj.Seconds;
+						document.getElementById("latitude").innerHTML = myObj.latitude;
+						document.getElementById("longitude").innerHTML = myObj.longitude;
+						document.getElementById("altitude").innerHTML = myObj.altitude;
+						document.getElementById("speed").innerHTML = myObj.speed;
+						document.getElementById("url").innerHTML ='<a href="https://www.google.com/maps/place/' + myObj.latitude + ',' + myObj.longitude + '">click here</a>';
+					}
+				};
+				xmlhttp.open("GET", "gps.json", true);
+				xmlhttp.send();
+			};
+		</script>
+		<style>
+			body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; font-size: 1.5em; Color: #000000; }
+			h1 { Color: #AA0000; }
+		</style>
+	</head>
+	<body>
+		<h1>TrackerGPSRF</h1>
+		<p>Serveur web démarré depuis:  <text id=hour></text>:<text id=min></text>:<text id=sec></text></p>
+		<p>Coordonnées GPS du tracker: <text id=latitude></text>,<text id=longitude></text></p>
+		<p>Altitude: <text id=altitude></text> meter</p>
+		<p>Vitesse: <text id=speed></text> m/s</p>
+		<p>Voir dans Google Maps: Se déconnecter du point d'accés WiFi TrackerGPSRF et <text id=url></text></p>
+	</body>
+</html>
