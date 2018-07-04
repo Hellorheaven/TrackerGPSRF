@@ -5,9 +5,30 @@
 			body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; font-size: 1.5em; Color: #000000; }
 			h1 { Color: #AA0000; }
 		</style>
+		<script language="javascript">
+			function SelectRedirect(){
+				switch(document.getElementById('s1').value)
+				{
+					case "Francais":
+					window.location="../home_fr.html";
+					break;
+					
+					case "English":
+					window.location="../home_en.html";
+					break;
+					default:
+					window.location="../index.html"; 
+					break;
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<h1>TrackerGPSRF</h1>
-		
+		<SELECT id="s1" NAME="section" onChange="SelectRedirect();">
+		<Option value="">Select Section</option>
+		<Option value="PHP">Francais</option>
+		<Option value="ASP">English</option>
+		</SELECT>
 	</body>
 </html>
