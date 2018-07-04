@@ -11,7 +11,7 @@ It composed by two module:
 ### Module GPS/RF:
 - GPS board: 1 x NEO6MV2
 - RF board: 1 x HC12
-- 1 lipo 1S 3.7V 150mah to 450mah (or more depend on uptime needed and the weight that can be use for application)
+- 1 lipo 1S 3.7V 150mah(more than 2h of uptime) to 450mah (or more depend on uptime needed and the weight that can be use for application).
 
 ### Module Hotspot/Webserver:
 - Arduino board: 1 x nodemcu v2 (or sparkfun or wemos...)
