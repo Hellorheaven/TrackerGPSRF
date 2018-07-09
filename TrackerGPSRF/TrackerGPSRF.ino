@@ -251,7 +251,7 @@ void sendGPS() {
   json += "\"altitude\":\"" + String(galt) + "\",";
   json += "\"speed\":\"" + String(gspeedweb) + "\"}";
 
-  server.send(200, "text/html", json);
+  server.send(200, "application/html", json);
   Serial.println("json send");
 }
 
